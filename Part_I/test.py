@@ -11,4 +11,4 @@ def minus(a, b):
 
 if __name__ == '__main__':
     print(plus(10, 4))
-    minus(10, 4)
+    print(minus(10, 4))
