@@ -27,7 +27,7 @@ print(len(myfile.read()))
 
 print('\n')
 
-# кратко о двоичных файлах
+# Кратко о двоичных файлах
 data = open('mybinfile.bin', 'wb')
 data.write(b'\x00\x00\x00\x07spam\x00\x08')
 data.close()
@@ -104,5 +104,67 @@ print(repr(F.read()))
 F.seek(0)
 E = pickle.load(F)
 print(E)
+
+print('\n')
+
+# Хранение объектов Python в формате JSON
+import json
+
+name = dict(first='Bob', last='Smith')
+rec = dict(name=name, job=['dev', 'mgr'], age=40.5)
+print(rec)
+
+S = json.dumps(rec)
+print(S)
+
+O = json.loads(S)
+print(O)
+
+print(O == rec)
+
+print('\n')
+
+json.dump(rec, fp=open('myjsonfile.txt', 'w'), indent=4)
+print(open('myjsonfile.txt').read())
+
+P = json.load(open('myjsonfile.txt'))
+print(P)
+
+print('\n')
+
+# Хранение упакованных двоичных данных: модуль struct
+import struct
+
+packed = struct.pack('>i4sh', 7, b'spam', 8)
+print(packed)
+
+file = open('mybinfile.bin', 'wb')
+file.write(packed)
+file.close()
+
+data = open('mybinfile.bin', 'rb').read()
+print(data)
+
+l = list(data)
+print(l)
+
+unp_data = struct.unpack('>i4sh', data)
+print(unp_data)
+
+print('\n')
+
+# Диспетчеры контекстов для файлов (Гарантия закрытия файла, сброса буфера и освобождения памяти)
+with open('myfile.txt') as myfile:
+    for line in myfile:
+        print(repr(line))
+        print(line)
+
+myfile = open('myfile.txt')
+try:
+    for line in myfile:
+        print(repr(line))
+        print(line)
+finally:
+    myfile.close()
 
 print('\n')
