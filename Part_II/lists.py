@@ -113,3 +113,43 @@ print(L4)
 print(L2 is L)
 print(L3 is L)
 print(L4 is L)
+
+print('\n')
+
+# Уровни глубины
+L = [4, 5, 6]
+X = L * 4
+Y = [L] * 4
+
+print(L)
+print(X)
+print(Y)
+
+print('\n')
+
+L[1] = 0
+
+print(L)
+print(X)
+print(Y)
+
+print('\n')
+
+L = [4, 5, 6]
+Y = [list(L)] * 4
+L[1] = 0
+
+print(L)
+print(Y)
+
+Y[0][1] = 99
+print(Y)
+
+print('\n')
+
+L = [4, 5, 6]
+Y = [list(L) for i in range(4)]
+print(Y)
+
+Y[0][1] = 99
+print(Y)
