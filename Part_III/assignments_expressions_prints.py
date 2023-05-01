@@ -44,7 +44,7 @@ print(b)
 print(a)
 print(b)
 
-a, *b, c = 'spam'
+a, *b, c = 'spameggs'
 print(a)
 print(b)
 print(c)
@@ -135,3 +135,78 @@ M = L
 L += [3, 4]  # эквивалентно L.extend([3, 4])
 print(L)
 print(M)
+
+print('\n' * 5)
+
+# Операторы выражений
+print('spam')  # - оператор выражения
+x = print('spam')
+print(x)
+
+print('\n')
+
+# Операторы выражений и изменения на месте
+L = [1, 2]
+L.append(3)  # - оператор выражения
+print(L)
+
+L = L.append(4)
+print(L)
+
+print('\n' * 5)
+
+# Операции вывода
+# Функция print
+print(0)
+print()
+x = 'spam'
+y = 99
+z = ['eggs']
+print(x, y, z)
+print(x, y, z, sep='')
+print(x, y, z, sep=', ')
+
+print('\n')
+
+print(1, 2, 3, sep=' # ')
+print(1, 2, 3, sep=' # ')
+print(1, 2, 3, sep=' # ')
+
+print()
+
+print(1, 2, 3, sep=' # ', end='\n')
+print(1, 2, 3, sep=' # ', end='')
+print(1, 2, 3, sep=' # ', end=' _spam_ ')
+
+print('\n')
+
+# Перенаправление потока вывода
+print('hello world')
+
+import sys
+
+sys.stdout.write('hello world\n')
+
+X = 1
+Y = 2
+
+print(X, Y)
+sys.stdout.write(str(X) + ' ' + str(Y) + '\n')
+
+print('\n')
+
+# Ручное перенаправление потока
+# sys.stdout = open('log.txt', 'a')
+
+print(x, y, x)
+
+# Автоматическое перенаправление потока
+temp = sys.stdout
+sys.stdout = open('log.txt', 'a')
+print('spam')
+print(1, 2, 3)
+sys.stdout.close()
+sys.stdout = temp
+
+print('back here')
+print(open('log.txt').read())
