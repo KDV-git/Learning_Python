@@ -50,3 +50,46 @@ if_dict = {'spam': lambda x: print(x ** 2), 'ham': function, 'eggs': lambda x: p
 if_dict.get('spam', default)(5)
 if_dict.get('ham', default)(5)
 if_dict.get('eggs', default)(5)
+
+print()
+
+# Тернарное выражение if/else
+X = 1
+Y = 'Y'
+Z = 'Z'
+
+if X:
+    A = Y
+else:
+    A = Z
+
+print(A)
+
+X = 0
+A = Y if X else Z
+
+print(A)
+
+# Несколько примеров
+A = 'true' if 'spam' else 'false'
+print(A)
+
+A = 'true' if '' else 'false'
+print(A)
+
+print()
+
+# Тот же эффект через операторы and и or
+A = ((X and Y) or Z)
+print(A)
+
+print()
+
+# Решение примера через функцию bool
+A = [Z, Y][bool(X)]
+print(A)
+
+print(['false', 'true'][bool('')])
+print(['false', 'true'][bool('spam')])
+
+# Лучший метод решения - if/else !
