@@ -149,7 +149,7 @@ print()
 file = open('test.txt', encoding='utf-8')
 print(file.read())
 
-# Загрузка файла проциями
+# Загрузка файла порциями
 file.seek(0)
 
 # Посимвольное чтение (При этом файл целиком помещается в память!)
@@ -208,6 +208,7 @@ print('\n' * 3)
 # Методики написания циклов (range, zip, enumerate, map)
 # Функция range (является итерируемым объектом)
 print(range(1, 11))
+print(type(range(1, 11)))
 print(list(range(1, 11)))
 print(list(range(500, -501, -100)))
 
@@ -310,3 +311,12 @@ print(next(E))
 print(next(E))
 print(next(E))
 print(next(E))
+
+# Команды оболочки и другое
+import os
+
+F = os.popen('dir')
+print(F.readline())
+print(F.read(50))
+
+os.system('systeminfo')
