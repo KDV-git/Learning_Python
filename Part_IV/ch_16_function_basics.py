@@ -18,8 +18,8 @@ print(lul.attr)
 print()
 
 
-def multiple(x, y):
-    return x * y
+def multiple(num1, num2):
+    return num1 * num2
 
 
 print(multiple(2, 10))
@@ -38,14 +38,15 @@ def intersect(seq1, seq2):
 
 L1 = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 L2 = [0, 8, 0, 7, 1, 9, 9, 7]
-S1 = 'bad_bitch_13'
-S2 = '1337_pines_228'
+S1 = 'simple_text_1_2'
+S2 = '198/264 is param'
 D1 = {'a': 1, 'b': 2, 'c': 3, 'd': 4, 'e': 5, 'f': 6, 'g': 7}
 # print(intersect(L1, S2)) - Сравнение разнотипных объектов вызовет TypeError
 print(intersect(L1, L2))
 print(intersect(S1, S2))
 print(intersect(S1, D1))
 print(intersect(L1, D1.values()))
+print(intersect(L1, D1.keys()))
 
 print()
 
@@ -79,7 +80,7 @@ def mult_nice(one, two):
     local_one.append(1.0)
     local_one.append(2000)
     two += 5
-    return one * two
+    return local_one * two
 
 
 x = [3, 33]
