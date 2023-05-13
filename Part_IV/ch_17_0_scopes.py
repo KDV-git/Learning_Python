@@ -365,6 +365,149 @@ def tester():
 
     return nested
 
+
 # Варианты сохранения состояния
 
 # 1. Состояние с помощью оператора nonlocal
+def tester(start):
+    state = start
+
+    def nested(label):
+        nonlocal state
+        print(label, state)
+        state += 1
+
+    return nested
+
+
+F = tester(0)  # Переменная state видима только внутри замыкания
+F('spam')
+# F.state - AttributeError: 'function' object has no attribute 'state'
+
+print('\n')
+
+
+# Состояние с помощью глобальных переменных: только одиночная копия (не стоит)
+def tester(start):
+    global state
+    state = start
+
+    def nested(label):
+        global state
+        print(label, state)
+        state += 1
+
+    return nested
+
+
+F = tester(0)
+F('spam')
+F('eggs')
+
+G = tester(42)  # Сбрасывает единственную копию state в глобальной
+G('toast')
+G('bacon')
+F('ham')  # Счетчик был перезаписан!
+
+print('\n')
+
+
+# Состояние с помощью классов: явные атрибуты (предварительный обзор)
+class tester:
+    def __init__(self, start):
+        self.state = start
+
+    def nested(self, label):
+        print(label, self.state)
+        self.state += 1
+
+
+F = tester(0)
+F.nested('spam')
+F.nested('ham')
+
+G = tester(42)  # Сбрасывает единственную копию state в глобальной
+G.nested('toast')
+G.nested('bacon')
+F.nested('ham')
+
+
+# Функция __call__ перехватывает прямые обращения к экземпляру
+class tester:
+    def __init__(self, start):
+        self.state = start
+
+    def __call__(self, label):
+        print(label, self.state)
+        self.state += 1
+
+
+H = tester(99)
+H('juice')
+H('pancakes')
+
+print('\n')
+
+
+# Состояние с помощью атрибутов функций
+def tester(start):
+    def nested(label):
+        print(label, nested.state)
+        nested.state += 1
+
+    nested.state = start  # Инициализация состояния после определения функции
+    return nested
+
+
+F = tester(0)
+F('spam')
+F('ham')
+print(F.state)  # Доступ к состоянию извне функции
+
+G = tester(42)
+G('toast')
+G('bacon')
+
+print(F.state)
+print(G.state)
+print(F is G)
+
+
+# Состояние с помощью изменяемых объектов: неотчетливый призрак прошлого Python? (НЕ НАДО!)
+def tester(start):
+    def nested(label):
+        print(label, state[0])
+        state[0] += 1
+
+    state = [start]
+    return nested
+
+
+# Не надо.
+
+print('\n\n\n')
+
+
+# Настройка open
+def makeopen(id):
+    original = builtins.open
+
+    def custom(*pargs, **kargs):
+        print('Custom open call %r:' % id, pargs, kargs)
+        return original(*pargs, **kargs)
+
+    builtins.open = custom
+
+
+path = 'D:\\Python\\Projects\\Learning_Python\\Part_III\\test2.txt'
+
+F = open(path)
+print(F.read(), end='\n\n')
+
+makeopen('spam')
+F = open(path)
+print(F.read(), end='\n\n')
+
+makeopen('eggs')
+F = open(path)
+print(F.read(), end='\n\n')
