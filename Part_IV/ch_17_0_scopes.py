@@ -121,6 +121,7 @@ def f1():
 
 
 action = f1()
+del f1
 action()  # Происходит вызов функции f2
 
 print('\n')
@@ -234,4 +235,136 @@ print(x(2))
 
 print('\n')
 
+
 # Переменные цикла могут требовать стандартные значения, а не области видимости
+def make_actions():
+    acts = []
+    for i in range(5):  # Попытка запомнить каждое значение i
+        acts.append(lambda x: i ** x)
+    return acts
+
+
+# На практике все функции запоминают последние значение i!
+acts = make_actions()
+print(acts[0](2))
+print(acts[1](2))
+print(acts[2](3))
+print(acts[3](3))
+
+# Код не работает — из-за того, что переменная из объемлющей области видимости ищется, когда функции вызываются
+# (после завершения цикла, т.е. когда i=4)
+
+print()
+
+
+# Решение, которое исправляет эту проблему:
+def make_actions():
+    acts = []
+    for i in range(5):  # Стандартные значения оцениваются при создании вложенных функций
+        acts.append(lambda x, i=i: i ** x)  # (а не при вызове их в более позднее время)
+    return acts
+
+
+acts = make_actions()
+print(acts[0](2))
+print(acts[1](2))
+print(acts[2](3))
+print(acts[3](3))
+
+print()
+
+
+# Произвольное вложение областей видимости (не стоит)
+def f1():
+    x = 99
+
+    def f2():
+        def f3():
+            print(x)  # Находится в локальной области видимости fl!
+
+        f3()
+
+    f2()
+
+
+f1()
+
+print('\n\n\n')
+
+# Оператор nonlocal
+# nonlocal no_glob - SyntaxError: nonlocal declaration not allowed at module level
+x = 1000
+
+
+def func():
+    x = 10
+
+    def func2():
+        nonlocal x
+        x += 1
+        print(x)
+
+    print(x)
+    func2()
+
+
+print(x)
+func()
+print(x, end='\n\n\n')
+
+
+# Примеры
+def tester(start):
+    state = start
+
+    def nested(label):
+        # state += 1 - UnboundLocalError: local variable 'state' referenced before assignment
+        nonlocal state
+        state += 1
+        print(label, state)
+
+    return nested
+
+
+F = tester(0)
+F('spam')
+F('ham')
+F('eggs')
+
+print()
+
+G = tester(42)
+G('spam')
+G('ham')
+F('bacon')
+
+# В функции замыкания нелокальные переменные являются данными с множеством копий для каждого вызова.
+
+print()
+
+
+# Перечисленным именам действительно должны быть присвоены значения в области видимости объемлющего def
+def tester(start):
+    def nested(label):
+        # nonlocal state - SyntaxError: no binding for nonlocal 'state' found
+        state = 0
+        print(label, state)
+
+    return nested
+
+
+# Нелокальные переменные НЕ ищутся в глобальной области видимости или в области видимости за пределами всех def
+spam = 99
+
+
+def tester():
+    def nested(label):
+        # nonlocal spam - SyntaxError: no binding for nonlocal 'spam' found
+        spam = 0
+        print(label, spam)
+
+    return nested
+
+# Варианты сохранения состояния
+
+# 1. Состояние с помощью оператора nonlocal
