@@ -100,12 +100,21 @@ def f1():
     X = 88
 
     def f2():
-        print(X)
+        ZZZ = 'ZZZ'
+        print(f'This X={X} and he was found in enclosing scope!')
+
+    # print(Z) - NameError: name 'ZZZ' is not defined
 
     f2()
 
+    # print(ZZZ) - NameError: name 'ZZZ' is not defined
+
+
+# f2() - NameError: name 'f2' is not defined
 
 f1()
+
+# f2() - NameError: name 'f2' is not defined
 
 print()
 
@@ -306,6 +315,7 @@ def func():
 
     print(x)
     func2()
+    print(x)
 
 
 print(x)
@@ -387,7 +397,7 @@ F('spam')
 print('\n')
 
 
-# Состояние с помощью глобальных переменных: только одиночная копия (не стоит)
+# 2. Состояние с помощью глобальных переменных: только одиночная копия (не стоит)
 def tester(start):
     global state
     state = start
@@ -412,7 +422,7 @@ F('ham')  # Счетчик был перезаписан!
 print('\n')
 
 
-# Состояние с помощью классов: явные атрибуты (предварительный обзор)
+# 3. Состояние с помощью классов: явные атрибуты (предварительный обзор)
 class tester:
     def __init__(self, start):
         self.state = start
@@ -449,7 +459,7 @@ H('pancakes')
 print('\n')
 
 
-# Состояние с помощью атрибутов функций
+# 4. Состояние с помощью атрибутов функций
 def tester(start):
     def nested(label):
         print(label, nested.state)
@@ -473,7 +483,7 @@ print(G.state)
 print(F is G)
 
 
-# Состояние с помощью изменяемых объектов: неотчетливый призрак прошлого Python? (НЕ НАДО!)
+# 5. Состояние с помощью изменяемых объектов: неотчетливый призрак прошлого Python? (НЕ НАДО!)
 def tester(start):
     def nested(label):
         print(label, state[0])
@@ -509,5 +519,13 @@ F = open(path)
 print(F.read(), end='\n\n')
 
 makeopen('eggs')
+F = open(path)
+print(F.read(), end='\n\n')
+
+makeopen('ham')
+F = open(path)
+print(F.read(), end='\n\n')
+
+makeopen('bacon')
 F = open(path)
 print(F.read(), end='\n\n')
