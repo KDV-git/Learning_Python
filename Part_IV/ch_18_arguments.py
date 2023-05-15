@@ -233,3 +233,49 @@ f('aaa', c='ccc', *('bbb', 'bbb'), **{'ddd': 'ddd'})
 f('aaa', *('bbb', 'bbb'), c='ccc', **{'ddd': 'ddd'})
 # 3. Внутри ★★
 f('aaa', *('bbb', 'bbb'), **dict(ddd='ddd', c='ccc'))
+
+print('\n\n\n')
+
+
+# Обобщенные функции для работы с множествами
+def intersect(*args):
+    res = []
+    for x in args[0]:
+        if x in res: continue
+        for other in args[1:]:
+            if x not in other: break
+        else:
+            res.append(x)
+    return res
+
+
+def union(*args):
+    res = []
+    for seq in args:
+        for x in seq:
+            if not x in res:
+                res.append(x)
+    return res
+
+
+s1, s2, s3 = 'SPAM', 'SCAM', 'SLAM'
+
+print(intersect(s1, s2, s3))  # Возвращает список из элементов существующих в каждой последовательности
+print(union(s1, s2, s3))  # Возвращает список элементов, существующих хотя-бы в одной последовательности
+
+print(intersect([1, 2], [1, 3, 6]))
+print(union([1, 2], [1, 3, 6]))
+
+print()
+
+
+def tester(func, items, trace=True):
+    for i in range(len(items)):
+        items = items[1:] + items[:1]
+        if trace: print(items)
+        print(sorted(func(*items)))
+
+
+tester(intersect, ('a', 'abcdefg', 'abdst', 'albmcnd'))
+tester(union, ('a', 'abcdefg', 'abdst', 'albmcnd'), False)
+tester(intersect, ('ba', 'abcdefg', 'abdst', 'albmcnd'), False)
