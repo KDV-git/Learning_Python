@@ -183,6 +183,19 @@ def kwonly(a, *, b='spam', c='ham'):
     print(a, b, c)
 
 
+import sys
+
+
+def new_print(*args, file=sys.stdout, sep=' ', end='\n'):
+    text = ''
+    for arg in args:
+        text = text + str(arg) + sep
+    text = text + end
+    file.write(text)
+
+
+new_print('poop', 'in', ('my',), ['soup', 1])
+
 kwonly(1)
 kwonly(1, c=3)
 kwonly(a=1)
