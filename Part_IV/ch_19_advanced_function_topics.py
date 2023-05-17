@@ -244,7 +244,90 @@ print([x for x in dir(func) if not x.endswith('__')])
 
 print('\n')
 
+
 # Аннотации функций
 
 # Аннотирующая информация — произвольные определяемые пользователем данные об аргументах и результате функции
 # Они совершенно необязательны и когда присутствуют, то просто присоединяются к атрибуту __ annotations__
+
+def func(a, b, c):
+    return a + b + c
+
+
+print(func(1, 2, 3))
+
+
+# Качественная аннотация
+def func(a: int, b: int, c: int) -> int:
+    return a + b + c
+
+
+print(func.__annotations__)
+
+
+# Аннотация уровня ну типа
+def func(a: 'spam', b: (1, 2), c: float) -> int:
+    return a + b + c
+
+
+print(func.__annotations__)
+print(type(func.__annotations__))
+
+print()
+
+# По сути аннотация - это объект (словарь(dict)) присоединённый к объекту (функция(func))
+print(func.__annotations__.items())
+
+for x in func.__annotations__.items(): print(x)
+
+print()
+
+
+# Стандартные значения аргументов указываются после аннотации
+def func(a: 'spam' = 4, b: (1, 10) = 5, c: float = 6) -> int:
+    return a + b + c
+
+
+print(func(1, 2, 3))
+print(func())
+print(func(1, c=10))
+
+# Пробелы не обязательны (не надо)
+
+# def func(a:'spam'=4,b:(1,10)=5,c:float=6)->int:
+#     return a+b+c
+
+print('\n\n')
+
+
+# Анонимные функции: выражения lambda
+
+# Сравнение с def
+def func(x, y, z): return x + y + z
+
+
+print(func(2, 3, 4))
+
+F = lambda x, y, z: x + y + z
+
+print(F(2, 3, 4))
+
+# Использование стандартных значений
+x = lambda a='fee', b='fie', c='foe': a + b + c
+
+print(x('wee'))
+
+
+# Правила поиска в областях видимости (LEGB) для выражения lambda полностью соответствуют оператору def
+def knights():
+    title = 'Sir'
+    action = (lambda x: title + ' ' + x)
+    return action
+
+
+act = knights()
+print(act('Bagel'))
+
+print()
+
+# Зочем?
