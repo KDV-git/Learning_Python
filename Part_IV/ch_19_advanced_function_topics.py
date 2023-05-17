@@ -330,4 +330,208 @@ print(act('Bagel'))
 
 print()
 
-# Зочем?
+# Для чего используется выражение lambda?
+
+# Обработчики обратных вызовов часто записываются как внутристрочные выражения lambda (см. далее)
+
+# Выражения lambda также широко используются при реализации таблиц переходов (списки или словари действий)
+L = [lambda x: x ** 2,
+     lambda x: x ** 3,
+     lambda x: x ** 4]
+
+for f in L:
+    print(f(2))
+
+print(L[1](3))
+
+# Эквивалентный код с def потребовал бы временных имен функций (они могли бы конфликтовать с остальными именами)
+
+print()
+
+# Переключатели для множественного ветвления: окончание
+key = 'got'
+D = {'already': (lambda: 2 + 2),
+     'got': lambda: 2 * 4,
+     'one': lambda: 2 * 6}
+
+print(D[key])
+print(D[key]())
+
+# Кодовая близость, обеспечиваемая выражениями lambda, очень полезна для функций, используемых только в одном контексте
+
+print()
+
+# Как (не) запутать свой код на Python (лучше не надо)
+lower = (lambda x, y: x if x < y else y)
+print(lower('bb', 'aa'))
+print(lower(22, 33))
+
+print()
+
+# Циклы внутри lambda (вызовы map и списковые включения)
+import sys
+
+showall = lambda x: list(map(sys.stdout.write, x))
+
+L = ['spam\n', 'eggs\n', 'ham\n']
+t = showall(L)
+
+print(t)  # Write возвращает количество записанных символов
+print(type(t))
+
+print()
+
+# То же самое через списковое включение
+showall = lambda x: [sys.stdout.write(line) for line in x]
+
+t = showall(L)
+
+print(t)
+print(type(t))
+
+print()
+
+# Эквивалент через print (Но будет возвращён лист из None)
+showall = lambda x: [print(line, end='') for line in x]
+
+t = showall(L)
+
+print(t)
+print(type(t))
+
+print()
+
+# Вариант print без спискового включения (Но будет возвращен один объект None)
+showall = lambda x: print(*x, sep='')
+
+t = showall(L)
+
+print(t)
+print(type(t))
+
+print('\n\n')
+
+
+# Выражения lambda также могут быть вложенными
+def action(x):
+    return (lambda y: x + y)
+
+
+act = action(99)
+
+print(act)
+print(act(2))
+
+# То же самое через
+action = (lambda x: (lambda y: x + y))
+act = action(99)
+
+print(act)
+print(act(2))
+
+print('\n')
+
+# Обратные вызовы lambda
+# С модулем tkinter, предназначенным для создания графических пользовательских интерфейсов
+from tkinter import Button, mainloop
+
+x = Button(text='Press me',
+           command=(lambda: sys.stdout.write('Spam\n')))
+
+# x.pack()
+# mainloop()
+
+print('\n')
+
+# Python сочетает в себе поддержку множества парадигм программирования:
+# 1. Процедурная (посредством своих базовых операторов)
+# 2. Объектно-ориентированная (с помощью классов)
+# 3. Функциональная
+
+# Инструменты функционального программирования
+# Отображение функций на итерируемые объекты: map
+counters = [1, 2, 3, 4, 5]
+
+
+def inc(x): return x + 10
+
+
+print(list(map(inc, counters)))
+print(list(map((lambda x: x + 3), counters)))
+
+
+# Эквивалент функции map через оператор def
+def mymap(func, seq):
+    res = []
+    for x in seq: res.append(func(x))
+    return res
+
+
+print(list(map(inc, [1, 2, 3])))
+print(mymap(inc, [1, 2, 3]))
+
+print()
+
+print(pow(3, 4))
+print(list(map(pow, [1, 2, 3], [2, 3, 4])))  # map ожидает функцию с N аргументами для N последовательностей
+
+# Сравнение со списковыми включениями
+print(list(map(inc, [1, 2, 3, 4])))
+print([inc(x) for x in [1, 2, 3, 4]])
+
+# В ряде случаев тар способна выполняться быстрее, чем списковое включение (когда отображается встроенная функция)
+# Однако map требует функцию, а не произвольное выражение
+
+print('\n')
+
+# Выбор элементов из итерируемых объектов: filter
+
+# Выбирает элементы из итерируемых объектов на основе проверочной функции
+print(list(range(-5, 5)))
+print(list(filter((lambda x: x > 0), range(-5, 5))))
+
+# Эквивалент с применением цикла for
+res = []
+
+for x in range(-5, 5):
+    if x > 0:
+        res.append(x)
+
+print(res)
+
+# Эквивалент с применением спискового включения
+print([x for x in range(-5, 5) if x > 0])
+
+print('\n')
+
+# Комбинирование элементов из итерируемых объектов: reduce
+from functools import reduce
+
+print(reduce((lambda x, y: x + y), [1, 2, 3, 4]))
+print(reduce((lambda x, y: x * y), [1, 2, 3, 4]))
+
+print()
+
+# Эквивалент через цикл for
+L = [1, 2, 3, 4]
+res = L[0]
+
+for x in L[1:]:
+    res += x
+
+print(res)
+
+print()
+
+
+# Эквивалент через оператор def
+def myreduce(func, seq):
+    res = seq[0]
+    for x in seq[1:]:
+        res = func(res, x)
+    return res
+
+
+print(myreduce((lambda x, y: x + y), [1, 2, 3, 4]))
+print(myreduce((lambda x, y: x * y), [1, 2, 3, 4]))
+
