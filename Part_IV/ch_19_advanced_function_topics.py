@@ -132,5 +132,119 @@ def sumtree(lst):
 
 print('\n')
 
-# Объекты функций: атрибуты и аннотации
 
+# Объекты функций: атрибуты и аннотации
+# Косвенные вызовы функций: "первоклассные" объекты
+
+# Функция - это объект, её имя - это переменная
+def echo(message):
+    print(message)
+
+
+echo('Direct call')
+x = echo
+x('x-Direct call')
+print(x is echo)
+
+print()
+
+
+# Функцию как и любой объект можно передать как аргумент другой функции
+def indirect(func, arg):
+    func(arg)
+
+
+indirect(echo, 'Argument call')
+indirect(x, 'x-Argument call')
+
+print()
+
+# Функции могут помещаться внутрь структур данных
+schedule = [(echo, 'Spam!'), (x, 'x-Spam!')]
+
+for func, arg in schedule:
+    func(arg)
+
+print()
+
+
+# Функции можно создавать и возвращать в других функциях (замыкания(фабричная функция)
+def make(label):
+    def echo(message):
+        print(label + ':' + message)
+
+    return echo
+
+
+F = make('Spam')
+F('Ham!')
+F('Eggs!')
+
+# Функция - это универсальная первоклассная объектная модель!
+
+print('\n')
+
+
+# Интроспекция функций
+def func(a):
+    b = 'spam'
+    return b * a
+
+
+print(func(8))
+print(func.__name__)
+print(dir(func))
+
+
+def dirring(obj):
+    count = 0
+    print(f'\n\nList of attribute for {obj}:')
+    try:
+        for atr in dir(obj):
+            if count == 10:
+                print()
+                print(atr, end=' | ')
+                count = 0
+            else:
+                print(atr, end=' | ')
+                count += 1
+    except AttributeError:
+        print('Ops AttributeError for object')
+    finally:
+        print('\n\n')
+
+
+dirring(func)
+
+print(func.__code__)
+dirring(func.__code__)
+print(func.__code__.co_varnames)
+print(func.__code__.co_argcount)
+
+print('\n')
+
+# Атрибуты функций (присоединяются к объекту функции)
+print(func)
+func.count = 0
+func.count += 1
+print(func.count)
+func.handles = 'Button-Press'
+print(func.handles)
+dirring(func)
+
+poop = func
+dirring(poop)
+dirring(dirring)
+
+print(len(dir(func)))
+print(len([x for x in dir(func) if not x.endswith('__')]))
+print([x for x in dir(func) if not x.endswith('__')])
+
+# Атрибуты классные (информации о состоянии like "статические локальные переменные")
+
+print('\n')
+
+# Аннотации функций
+
+# Аннотирующая информация — произвольные определяемые пользователем данные об аргументах и результате функции
+# Они совершенно необязательны и когда присутствуют, то просто присоединяются к атрибуту __ annotations__
