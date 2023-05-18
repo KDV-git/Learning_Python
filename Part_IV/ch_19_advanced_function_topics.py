@@ -438,8 +438,8 @@ from tkinter import Button, mainloop
 x = Button(text='Press me',
            command=(lambda: sys.stdout.write('Spam\n')))
 
-# x.pack()
-# mainloop()
+x.pack()
+mainloop()
 
 print('\n')
 
@@ -479,7 +479,7 @@ print(list(map(pow, [1, 2, 3], [2, 3, 4])))  # map ожидает функцию
 print(list(map(inc, [1, 2, 3, 4])))
 print([inc(x) for x in [1, 2, 3, 4]])
 
-# В ряде случаев тар способна выполняться быстрее, чем списковое включение (когда отображается встроенная функция)
+# В ряде случаев map способна выполняться быстрее, чем списковое включение (когда отображается встроенная функция)
 # Однако map требует функцию, а не произвольное выражение
 
 print('\n')
@@ -534,4 +534,3 @@ def myreduce(func, seq):
 
 print(myreduce((lambda x, y: x + y), [1, 2, 3, 4]))
 print(myreduce((lambda x, y: x * y), [1, 2, 3, 4]))
-
