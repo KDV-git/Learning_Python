@@ -104,4 +104,65 @@ gen = generate_numbers()
 print(gen.__next__())
 print(gen.send(999))
 
+# throw - вызывает исключение подобно raise
+# generator.throw(value)
+# generator.throw(type[, value[, traceback]])
+#
+# close - закрывает генерацию и вызывает GeneratorExit
+# generator.close()
+
 print('\n\n')
+
+# Генераторные выражения
+# Тот же синтаксис, что у списковых включений, только круглые скобки ()
+
+print([x ** 2 for x in range(3)])
+print((x ** 2 for x in range(3)))
+print(list((x ** 2 for x in range(3))))  # функциональность также что и у включения
+
+print()
+
+G = (x ** 2 for x in range(3))
+print(iter(G) is G)
+print(next(G))
+print(next(G))
+print(next(G))
+# print(next(G)) - StopIteration
+
+print()
+
+print(''.join(x.upper() * 3 for x in 's,p,a,m'.split(',')))
+
+# Согласно синтаксису, когда генераторное выражение является единственным элементом, уже заключенном в круглые скобки,
+# предназначенные для других целей, то помещать его в еще одну пару круглых скобок не требуется.
+
+print(sum(x ** 2 for x in range(5)))
+print(sorted(x ** 2 for x in range(5)))
+print(sorted((x ** 2 for x in range(5)), reverse=True))  # Здесь круглые скобки обязательны!
+
+print()
+
+# Сравнение генераторных выражений и функции map
+nums = (-1, -2, 3, 4)
+
+print(list(map(abs, nums)))
+print(list(abs(x) for x in nums))
+
+# Случай без применения функции
+print(list(map(lambda x: x ** 2, nums)))
+print(list(x ** 2 for x in nums))
+
+print()
+
+# Примеры с вложением
+print([x * 2 for x in [abs(x) for x in nums]])
+print(list(map(lambda x: x * 2, map(abs, nums))))
+print(list(x * 2 for x in (abs(x) for x in nums)))
+
+# Результатом всех трех форм является объединение операций, но генераторы не создают множество временных списков.
+
+print()
+
+# (Не стоит)
+print(list(map(abs, map(abs, map(abs, (-1, 0, 1))))))
+print(list(abs(x) for x in (abs(x) for x in (abs(x) for x in (-1, 0, 1)))))
