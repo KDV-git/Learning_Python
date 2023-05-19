@@ -166,3 +166,103 @@ print()
 # (Не стоит)
 print(list(map(abs, map(abs, map(abs, (-1, 0, 1))))))
 print(list(abs(x) for x in (abs(x) for x in (abs(x) for x in (-1, 0, 1)))))
+
+print('\n')
+
+# Сравнение генераторных выражений и функции filter
+line = 'aa bbb c'
+
+print(''.join(x for x in line.split() if len(x) > 1))
+print(''.join(filter(lambda x: len(x) > 1, line.split())))
+
+# С доп обработкой
+print(''.join(x.upper() for x in line.split() if len(x) > 1))
+print(''.join(map(str.upper, filter(lambda x: len(x) > 1, line.split()))))
+
+print('\n\n')
+
+# Генераторы являются объектами с одиночной итерацией
+G = (c * 4 for c in 'SPAM')
+I1 = G
+I2 = G
+I3 = G
+print(next(G))
+print(next(I1))
+print(next(I2))
+print(next(I3))
+
+# print(next(G)) - StopIteration
+# print(next(I1)) - StopIteration
+# print(next(I2)) - StopIteration
+# print(next(I3)) - StopIteration
+
+# То же самое работает и с генераторными функциями
+
+print('\n\n')
+
+
+# Расширение yield from
+def both(N):
+    for i in range(N): yield i
+    for i in (x ** 2 for x in range(N)): yield i
+
+
+print(list(both(5)))
+
+
+def both(N):
+    yield from range(N)
+    yield from (x ** 2 for x in range(N))
+
+
+print(list(both(5)))
+
+print('\n')
+
+# Инструменты прохода по каталогам
+import os
+
+for (root, subs, files) in os.walk('.'):
+    for name in files:
+        print(root, name)
+
+print('\n')
+
+G = os.walk('.')
+
+print(iter(G) is G)
+print(next(G))
+print(next(G))
+# print(next(G)) - StopIteration
+
+print('\n\n')
+
+
+# Генераторы и применение функций
+def f(a, b, c):
+    print('{}, {} and {}'.format(a, b, c))
+
+
+f(0, 1, 2)
+f(*range(3))
+f(*(i for i in range(3)))
+
+print()
+
+D = dict(a='Bob', b='dev', c=40.5)
+
+f(a='Bob', b='dev', c=40.5)
+f(**D)
+f(*D)
+f(*D.values())
+
+print()
+
+for x in 'spam':
+    print(x.upper(), end=' ')
+
+print()
+
+print(list(print(x.upper(), end=' ') for x in 'spam'))
+
+print(*(x.upper() for x in 'spam'))
