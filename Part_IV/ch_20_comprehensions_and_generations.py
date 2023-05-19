@@ -203,8 +203,11 @@ print('\n\n')
 
 # Расширение yield from
 def both(N):
-    for i in range(N): yield i
-    for i in (x ** 2 for x in range(N)): yield i
+    for i in range(N):
+        yield i
+
+    for i in (x ** 2 for x in range(N)):
+        yield i
 
 
 print(list(both(5)))
@@ -266,3 +269,122 @@ print()
 print(list(print(x.upper(), end=' ') for x in 'spam'))
 
 print(*(x.upper() for x in 'spam'))
+
+print('\n')
+
+
+# Перестановки: все возможные комбинации
+def permute1(seq):
+    if not seq:
+        return [seq]
+    else:
+        res = []
+        for i in range(len(seq)):
+            rest = seq[:i] + seq[i + 1:]
+            for x in permute1(rest):
+                res.append(seq[i:i + 1] + x)
+        return res
+
+
+def permute2(seq):
+    if not seq:
+        yield seq
+    else:
+        for i in range(len(seq)):
+            rest = seq[:i] + seq[i + 1:]
+            for x in permute2(rest):
+                yield seq[i:i + 1] + x
+
+
+print(permute1('abc'))
+print(list(permute2('abc')))
+
+G = permute2('abc')
+
+print(next(G))
+print(next(G))
+print(next(G))
+print(next(G))
+print(next(G))
+print(next(G))
+# print(next(G)) - StopIteration
+
+print('\n')
+
+print(permute1('spam'))
+print(list(permute2('spam')))
+
+print('\n')
+
+# Единовременно такое количество результатов будет очень долго обрабатываться
+# print(permute1(list(range(10))))
+# print(list(permute2(list(range(10)))))
+
+# Но генератор выводит следующий результат моментально
+G = permute2(list(range(10)))
+print(G.__next__())
+print(G.__next__())
+print(G.__next__())
+print(G.__next__())
+print(G.__next__())
+print(G.__next__())
+print(G.__next__())
+
+G = permute2(list(range(50)))
+print(G.__next__())
+print(G.__next__())
+print(G.__next__())
+
+# Обычная функция банально зависнет
+# print(permute1(list(range(50))))
+
+print('\n\n')
+
+
+# Эмуляция zip и map с помощью генераторной функции
+
+def mymap(func, *seqs):
+    for args in zip(*seqs):
+        yield func(*args)
+
+
+def myzip(*seqs):
+    seqs = [list(S) for S in seqs]
+    while all(seqs):
+        yield tuple(s.pop(0) for s in seqs)
+
+
+def myzipPad(*seqs, pad=None):
+    seqs = [list(S) for S in seqs]
+    while any(seqs):
+        yield tuple((S.pop(0) if S else pad) for S in seqs)
+
+
+print(list(map(abs, (-2, -1, 0, 1))))
+print(list(mymap(abs, (-2, -1, 0, 1))))
+
+print()
+
+print(list(zip([1, 2, 3], [11, 22, 33])))
+print(list(myzip([1, 2, 3], [11, 22, 33])))
+
+print()
+
+print(list(myzip([1, 2, 3], [11, 22, 33, 44, 55])))
+print(list(myzipPad([1, 2, 3], [11, 22, 33, 44, 55])))
+
+print('\n')
+
+# Сводка по синтаксису включений (+множеств и +словарей):
+print([x * x for x in range(10)])
+print(x * x for x in range(10))
+print({x * x for x in range(10)})
+print({x: x * x for x in range(10)})
+
+print()
+
+# Синтаксический сахар
+print({x * x for x in range(10)})
+print(set(x * x for x in range(10)))
+print({x: x * x for x in range(10)})
+print(dict((x, x * x) for x in range(10)))
