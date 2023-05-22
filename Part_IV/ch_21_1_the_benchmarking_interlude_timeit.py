@@ -14,7 +14,8 @@ L = [1, 2, 3, 4, 5]
 i = 0
 while i < len(L):
     L[i] += 1
-    i += 1'''
+    i += 1
+    '''
 
 print(timeit.repeat(number=10000, repeat=3, stmt=stmt))
 print(min(timeit.repeat(number=10000, repeat=3, stmt=stmt)))
@@ -26,12 +27,14 @@ print()
 # Настройка
 setup = '''
 L = [1, 2, 3, 4, 5]
-i = 0'''
+i = 0
+'''
 
 stmt = '''
 while i < len(L):
     L[i] += 1
-    i += 1'''
+    i += 1
+    '''
 
 print(timeit.repeat(number=10000, repeat=3, setup=setup, stmt=stmt))
 print(min(timeit.repeat(number=10000, repeat=3, setup=setup, stmt=stmt)))
@@ -56,3 +59,11 @@ def testcase():
 
 print(timeit.repeat(stmt=testcase, number=1000, repeat=3))
 print(min(timeit.repeat(stmt=testcase, number=1000, repeat=3)))
+
+print('\n')
+
+# Другие темы, связанные с оценочными испытаниями:
+# • pystone.py — программа, предназначенная для измерения скорости Python в широком диапазоне кода
+# (https://github.com/blackberry/Python/ blob/master/Python-З/Lib/test/pystone.py);
+# • https://speed.python.org — сайт проекта для координации работы над распространенными эталонными тестами Python;
+# • https://speed.руру.org — сайт оценочных испытаний РуРу, который частично эмулирует предыдущий пункт.
