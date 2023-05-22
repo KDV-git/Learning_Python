@@ -72,10 +72,68 @@ print()
 
 
 def adder(**kargs):
-    pass
+    val = list(kargs.values())
+    res = val[0]
+    for item in val[1:]:
+        res += item
+    return res
+
+
+D = {'e': 4, 'f': 5, 'g': 6}
+print(adder(a=1, b=2, c=3))
+print(adder(**D))
+print(adder(**{'a': 1, 'b': 2, 'c': 3}))
+
+# Error
+# print(adder(*D)) - TypeError: adder() takes 0 positional arguments but 3 were given
+# print(adder({'a': 1, 'b': 2, 'c': 3})) - TypeError: adder() takes 0 positional arguments but 1 was given
+
+print('\n')
+
 
 # 5. Словарные инструменты.
+def copy_dict(dict):
+    new_dict = {}
+    for key in dict.keys():
+        new_dict[key] = dict[key]
+    return new_dict
+
+
+D = {'a': 1, 'b': 2, 'c': 3, 'e': 4, 'f': 5, 'g': 6}
+new_D = copy_dict(D)
+print(new_D)
+print(new_D is D)
+
+print()
+
+
+def copy_dict2(dict):
+    return {key: dict[key] for key in dict.keys()}
+
+
+D = {'a': 1, 'b': 2, 'c': 3, 'e': 4, 'f': 5, 'g': 6}
+new_D = copy_dict2(D)
+print(new_D)
+print(new_D is D)
+
+print('\n')
+
+
 # 6. Словарные инструменты.
+def add_dict(dict1, dict2):
+    return {key: value for key, value in zip(zip(dict1, dict1.values()), zip(dict2, dict2.values()))}
+
+
+D1 = {'a': 1, 'b': 2, 'c': 3}
+D2 = {'e': 4, 'f': 5, 'g': 6}
+print(list(zip(D1, D1.values())))
+print(list(zip(D2, D2.values())))
+print(list(zip(zip(D1, D1.values()), zip(D2, D2.values()))))
+
+print()
+
+print(add_dict(D1, D2))
+
 # 7. Дополнительные примеры сопоставления аргументов.
 # 8. Снова простые числа.
 # 9. Итерации и включения.
