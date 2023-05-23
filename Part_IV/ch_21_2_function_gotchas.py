@@ -58,9 +58,16 @@ saver()
 saver([2])
 saver([2])
 saver()
-
 x = saver
 x()
+
+print()
+
+L = ['L']
+print(L)
+saver(L)
+saver(L)
+saver(L)
 
 print()
 
