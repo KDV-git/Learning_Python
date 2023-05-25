@@ -1,5 +1,6 @@
 # Python хранит загруженные модули в таблице по имени sys.modules и просматривает ее в начале операции импортирования
 import sys
+# import sys - ModuleNotFoundError: No module named 'sysasfafawf'
 
 
 def modules_check():
