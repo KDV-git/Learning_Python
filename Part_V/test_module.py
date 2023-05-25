@@ -1,3 +1,8 @@
+spam = 1
+ham = [1, 2, 3]
+eggs = 3
+
+
 def painter(x):
     print(x)
 
