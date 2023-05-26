@@ -58,6 +58,14 @@ print(test_module.__dict__, end='\n\n\n')
 print(type(test_module.__dict__))
 print(list(test_module.__dict__))
 
+print('\n')
+
+# Reload
 from importlib import reload
 
 reload(test_module)
+
+print(spam)
+print(test_module.spam)
+
+# reload(ch_22_modules_the_big_picture) - NameError: name 'ch_22_modules_the_big_picture' is not defined
