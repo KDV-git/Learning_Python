@@ -59,5 +59,3 @@ from dir1.dir2 import mod as modfromas
 
 print(modfromas)
 print(modfromas.z)
-
-print('\n')
