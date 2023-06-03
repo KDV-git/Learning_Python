@@ -44,8 +44,11 @@ print('\n')
 
 
 class ThirdClass(SecondClass):
+    # ThirdClass.poop = 'poop' - NameError: name 'ThirdClass' is not defined
+
     def __init__(self, value):
         self.data = value
+        ThirdClass.poop = 'poop'
 
     def __add__(self, other):
         return ThirdClass(self.data + other)
@@ -69,6 +72,24 @@ print(b)
 a.mul(3)
 a.display()
 print(a)
+
+print()
+
+print(ThirdClass.poop)
+print(a.poop)
+print(b.poop, end='\n\n')
+
+a.poop = 'a-poop'
+
+print(ThirdClass.poop)
+print(a.poop)
+print(b.poop, end='\n\n')
+
+ThirdClass.poop = 'new-poop'
+
+print(ThirdClass.poop)
+print(a.poop)
+print(b.poop)
 
 print('\n')
 
@@ -119,7 +140,7 @@ print()
 # Для упрощения поиска в иерархии наследования при извлечении атрибутов каждый экземпляр имеет связь со своим классом
 print(x.__class__)
 
-# Классы также располагают атрибутом__ bases__ , который является кортежем ссылок на их объекты суперклассо
+# Классы также располагают атрибутом__ bases__ , который является кортежем ссылок на их объекты суперклассов
 print(rec.__bases__)
 
 print('\n')
