@@ -161,14 +161,13 @@ if __name__ == '__main__':
 
 def class_tree(instance):
     attrs = {}
-    attrs[instance.name] = list(key for key in instance.__dict__.keys() if not key.startswith("__"))
-    attrs[instance.__class__.__name__] = list(
-        key for key in instance.__class__.__dict__.keys() if not key.startswith("__"))
+    attrs[instance.name] = [key for key in instance.__dict__.keys() if not key.startswith("__")]
+    attrs[instance.__class__.__name__] = [key for key in instance.__class__.__dict__.keys() if not key.startswith("__")]
 
     for supclass in instance.__class__.__bases__:
         if supclass.__name__ == 'object':
             continue
-        attrs[supclass.__name__] = list(key for key in supclass.__dict__.keys() if not key.startswith("__"))
+        attrs[supclass.__name__] = [key for key in supclass.__dict__.keys() if not key.startswith("__")]
 
     return attrs
 
