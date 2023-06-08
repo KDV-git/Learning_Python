@@ -161,4 +161,149 @@ print(X)
 
 print('\n\n\n')
 
+
 # Итерируемые объекты: __iter__ и __next__
+class Squares:
+    def __init__(self, start, stop):
+        self.value = start - 1
+        self.stop = stop
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self.value == self.stop:
+            raise StopIteration
+        else:
+            self.value += 1
+            return self.value ** 2
+
+
+for i in Squares(1, 5):
+    print(i, end=' ')
+
+print()
+
+X = Squares(1, 5)
+print(next(X))
+print(next(X))
+print(next(X))
+print(next(X))
+print(next(X))
+# print(next(X)) - raise StopIteration
+
+print()
+
+X = Squares(1, 5)
+# print(X[1]) - TypeError: 'Squares' object is not subscriptable
+print(list(X)[1])
+
+print()
+
+# Метод __iter__ класса может быть предназначен только для единственного обхода
+X = Squares(1, 5)
+
+print([n for n in X])
+print([n for n in X])
+
+print([n for n in Squares(1, 5)])
+
+print()
+
+# Другие итерационные контексты
+print(36 in Squares(1, 10))
+a, b, c = Squares(1, 3)
+print(a, b, c)
+print(':'.join(map(str, Squares(1, 5))))
+
+print()
+
+# Преобразование в список поддерживает множество просмотров, ценой дополнительного расхода времени и пространства
+X = Squares(1, 5)
+
+print(tuple(X))
+print(tuple(X))
+
+X = list(Squares(1, 5))
+
+print(tuple(X))
+print(tuple(X))
+
+print('\n')
+
+
+# Множество итераторов в одном объекте
+class SkipObject:
+    def __init__(self, wrapped):
+        self.wrapped = wrapped
+
+    def __iter__(self):
+        return SkipIterator(self.wrapped)
+
+
+class SkipIterator:
+    def __init__(self, wrapped):
+        self.wrapped = wrapped
+        self.offset = 0
+
+    def __next__(self):
+        if self.offset >= len(self.wrapped):
+            raise StopIteration
+        else:
+            item = self.wrapped[self.offset]
+            self.offset += 2
+            return item
+
+
+alpha = 'abcdef'
+skipper = SkipObject(alpha)
+I = iter(skipper)
+print(next(I), next(I), next(I))
+# print(next(I)) - raise StopIteration
+
+for x in skipper:
+    for y in skipper:
+        print(x + y, end=' ')
+
+print()
+
+a = SkipObject('abc')
+b = SkipObject('abc')
+print(a is b)
+
+print('\n')
+
+
+# Альтернативная реализация: __iter__ + yield
+class SquaresYield:
+    def __init__(self, start, stop):
+        self.start = start
+        self.stop = stop
+
+    def __iter__(self):
+        for value in range(self.start, self.stop + 1):
+            yield value ** 2
+
+
+for i in SquaresYield(1, 5):
+    print(i, end=' ')
+
+print()
+
+S = SquaresYield(1, 5)
+print(S)
+I = iter(S)
+print(I)
+print(next(I))
+print(next(I))
+print(next(I))
+print(next(I))
+print(next(I))
+# print(next(I)) - StopIteration
+
+# Реализация генератора как __iter__ устраняет посредника в коде, хотя обе схемысоздают новый генераторный объект для каждой итерации:
+# • Наличие __iter__ запускает метод __iter__, который возвращает новый генераторный объект с методом __next__.
+# • Отсутсвие __iter__ производит вызов для создания генераторного объекта, метод __iter__ которого возвращает сам объект.
+
+print()
+
